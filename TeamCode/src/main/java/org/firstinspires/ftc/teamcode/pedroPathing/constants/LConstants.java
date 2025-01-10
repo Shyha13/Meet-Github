@@ -22,8 +22,8 @@ public class LConstants {
         FollowerConstants.rightFrontMotorDirection = DcMotorSimple.Direction.REVERSE;
         FollowerConstants.rightRearMotorDirection = DcMotorSimple.Direction.FORWARD;
 
-        PinpointConstants.forwardY = -7.4; //tune
-        PinpointConstants.strafeX = -5.6; //tune
+        PinpointConstants.forwardY = -7.4;
+        PinpointConstants.strafeX = -5.6;
         PinpointConstants.distanceUnit = DistanceUnit.INCH;
         PinpointConstants.hardwareMapName = "pinpoint";
         PinpointConstants.useYawScalar = false;

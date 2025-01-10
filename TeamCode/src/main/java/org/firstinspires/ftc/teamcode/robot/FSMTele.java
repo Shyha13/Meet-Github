@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.util.Range;
 public class FSMTele extends LinearOpMode {
     public static double kP_i = 0.02;
     public static double kP_o = 0.01;
+    public DcMotor back;
 
     public enum States {
         HOME, // where everything is idle and retracted

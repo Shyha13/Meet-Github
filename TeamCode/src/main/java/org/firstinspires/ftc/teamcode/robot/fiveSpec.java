@@ -11,6 +11,9 @@ import com.pedropathing.util.Timer;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 
@@ -19,6 +22,9 @@ public class fiveSpec extends OpMode {
 
     private Follower follower;
     private Timer pathTimer, actionTimer, opmodeTimer;
+
+    public static double kP_o = 0.01;
+    DcMotor back = hardwareMap.get(DcMotor.class, "back");
 
     private int pathState;
 
@@ -187,17 +193,29 @@ public class fiveSpec extends OpMode {
         end.setLinearHeadingInterpolation(spec4.getHeading(), park.getHeading());
     }
 
+    public double outtakePid(double target, double current) {
+        return (target - current) * kP_o;
+    }
+
+    public void outtake(int targetPosition) {
+        back.setTargetPosition(targetPosition);
+        back.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        back.setPower(outtakePid(targetPosition, back.getCurrentPosition()));
+    }
+
 
     public void autonomousPathUpdate() {
         switch (pathState) {
 
             case 0:
+                outtake(2600);
                 follower.followPath(preload);
                 setPathState(1);
                 break;
 
             case 1:
                 if(follower.getPose().getX() > (scorePre.getX() - .1) && follower.getPose().getY() > (scorePre.getY() - .1)) {
+                    outtake(0);
                     follower.followPath(samp1L,true);
                     setPathState(2);
                 }
@@ -244,6 +262,7 @@ public class fiveSpec extends OpMode {
             case 7:
                 if(follower.getPose().getX() > (push3.getX() - .1) && follower.getPose().getY() > (push3.getY() - .1)) {
                     follower.followPath(get,true);
+                    outtake(2600);
                     setPathState(8);
                 }
                 break;
@@ -251,6 +270,7 @@ public class fiveSpec extends OpMode {
             case 8:
                 if(follower.getPose().getX() > (getSpec.getX() - .1) && follower.getPose().getY() > (getSpec.getY() - .1)) {
                     follower.followPath(hang1,true);
+                    outtake(0);
                     setPathState(9);
                 }
                 break;
@@ -258,6 +278,7 @@ public class fiveSpec extends OpMode {
             case 9:
                 if(follower.getPose().getX() > (spec1.getX() - .1) && follower.getPose().getY() > (spec1.getY() - .1)) {
                     follower.followPath(get2,true);
+                    outtake(2600);
                     setPathState(10);
                 }
                 break;
@@ -265,6 +286,7 @@ public class fiveSpec extends OpMode {
             case 10:
                 if(follower.getPose().getX() > (getSpec.getX() - .1) && follower.getPose().getY() > (getSpec.getY() - .1)) {
                     follower.followPath(hang2,true);
+                    outtake(0);
                     setPathState(11);
                 }
                 break;
@@ -272,6 +294,7 @@ public class fiveSpec extends OpMode {
             case 11:
                 if(follower.getPose().getX() > (spec2.getX() - .1) && follower.getPose().getY() > (spec2.getY() - .1)) {
                     follower.followPath(get3,true);
+                    outtake(2600);
                     setPathState(12);
                 }
                 break;
@@ -279,6 +302,7 @@ public class fiveSpec extends OpMode {
             case 12:
                 if(follower.getPose().getX() > (getSpec.getX() - .1) && follower.getPose().getY() > (getSpec.getY() - .1)) {
                     follower.followPath(hang3,true);
+                    outtake(0);
                     setPathState(13);
                 }
                 break;
@@ -286,6 +310,7 @@ public class fiveSpec extends OpMode {
             case 13:
                 if(follower.getPose().getX() > (spec3.getX() - .1) && follower.getPose().getY() > (spec3.getY() - .1)) {
                     follower.followPath(get4,true);
+                    outtake(2600);
                     setPathState(14);
                 }
                 break;
@@ -293,6 +318,7 @@ public class fiveSpec extends OpMode {
             case 14:
                 if(follower.getPose().getX() > (getSpec.getX() - 1) && follower.getPose().getY() > (getSpec.getY() - .1)) {
                     follower.followPath(hang4,true);
+                    outtake(0);
                     setPathState(15);
                 }
                 break;
@@ -317,7 +343,7 @@ public class fiveSpec extends OpMode {
 
         follower.update();
         autonomousPathUpdate();
-
+        telemetry.addData("Outtake pos:", back.getCurrentPosition());
         telemetry.addData("path state", pathState);
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
@@ -335,6 +361,12 @@ public class fiveSpec extends OpMode {
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
         buildPaths();
+
+        back.setDirection(DcMotorSimple.Direction.REVERSE);
+        back.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
 
     @Override
