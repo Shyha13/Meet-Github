@@ -19,34 +19,31 @@ import org.firstinspires.ftc.teamcode.pedroPathing.constants.LConstants;
 
 @Autonomous(name = "AutoOOoOoOOo")
 public class fiveSpec extends OpMode {
-
+    DcMotor back;
     private Follower follower;
-    private Timer pathTimer, actionTimer, opmodeTimer;
-
+    private Timer pathTimer, opmodeTimer;
     public static double kP_o = 0.01;
-    DcMotor back = hardwareMap.get(DcMotor.class, "back");
-
     private int pathState;
 
     private final Pose startPose = new Pose(8, 63, Math.toRadians(180));
 
-    private final Pose scorePre = new Pose(38.4, 63, Math.toRadians(180));
+    private final Pose scorePre = new Pose(23, 63, Math.toRadians(180));
 
-    private final Pose lineup1 = new Pose(60, 23, Math.toRadians(0));
-    private final Pose push1 = new Pose(15, 23, Math.toRadians(0));
+    private final Pose lineup1 = new Pose(36, 23, Math.toRadians(0));
+    private final Pose push1 = new Pose(10, 23, Math.toRadians(0));
 
-    private final Pose lineup2 = new Pose(60, 12.4, Math.toRadians(0));
-    private final Pose push2 = new Pose(15, 12.4, Math.toRadians(0));
+    private final Pose lineup2 = new Pose(36, 12.4, Math.toRadians(0));
+    private final Pose push2 = new Pose(10, 12.4, Math.toRadians(0));
 
-    private final Pose lineup3 = new Pose(60, 8.9, Math.toRadians(0));
-    private final Pose push3 = new Pose(15, 8.9, Math.toRadians(0));
+    private final Pose lineup3 = new Pose(36, 8.9, Math.toRadians(0));
+    private final Pose push3 = new Pose(10, 8.9, Math.toRadians(0));
 
     private final Pose getSpec = new Pose(11.6, 26, Math.toRadians(0));
 
-    private final Pose spec1 = new Pose(38.4, 62, Math.toRadians(180));
-    private final Pose spec2 = new Pose(38.4, 64, Math.toRadians(180));
-    private final Pose spec3 = new Pose(38.4, 66, Math.toRadians(180));
-    private final Pose spec4 = new Pose(38.4, 68, Math.toRadians(180));
+    private final Pose spec1 = new Pose(23, 61, Math.toRadians(180));
+    private final Pose spec2 = new Pose(23, 65, Math.toRadians(180));
+    private final Pose spec3 = new Pose(23, 67, Math.toRadians(180));
+    private final Pose spec4 = new Pose(23, 69, Math.toRadians(180));
 
     private final Pose park = new Pose(10.2, 13, Math.toRadians(90));
 
@@ -66,8 +63,8 @@ public class fiveSpec extends OpMode {
                 .addPath(
                         new BezierCurve(
                                 new Point(scorePre),
-                                new Point(0.000, 29.000, Point.CARTESIAN),
-                                new Point(79.600, 37.800, Point.CARTESIAN),
+                                new Point(0.000, 27.000, Point.CARTESIAN),
+                                new Point(79.600, 35.800, Point.CARTESIAN),
                                 new Point(lineup1)))
                 .setLinearHeadingInterpolation(scorePre.getHeading(), lineup1.getHeading())
                 .build();
@@ -208,14 +205,14 @@ public class fiveSpec extends OpMode {
         switch (pathState) {
 
             case 0:
-                outtake(2600);
+              //  outtake(2600);
                 follower.followPath(preload);
                 setPathState(1);
                 break;
 
             case 1:
-                if(follower.getPose().getX() > (scorePre.getX() - .1) && follower.getPose().getY() > (scorePre.getY() - .1)) {
-                    outtake(0);
+                if(follower.getPose().getX() > (scorePre.getX() - 1) && follower.getPose().getY() > (scorePre.getY() - 1)) {
+                  //  outtake(0);
                     follower.followPath(samp1L,true);
                     setPathState(2);
                 }
@@ -262,7 +259,7 @@ public class fiveSpec extends OpMode {
             case 7:
                 if(follower.getPose().getX() > (push3.getX() - .1) && follower.getPose().getY() > (push3.getY() - .1)) {
                     follower.followPath(get,true);
-                    outtake(2600);
+                  //  outtake(2600);
                     setPathState(8);
                 }
                 break;
@@ -270,7 +267,7 @@ public class fiveSpec extends OpMode {
             case 8:
                 if(follower.getPose().getX() > (getSpec.getX() - .1) && follower.getPose().getY() > (getSpec.getY() - .1)) {
                     follower.followPath(hang1,true);
-                    outtake(0);
+                 //   outtake(0);
                     setPathState(9);
                 }
                 break;
@@ -278,7 +275,7 @@ public class fiveSpec extends OpMode {
             case 9:
                 if(follower.getPose().getX() > (spec1.getX() - .1) && follower.getPose().getY() > (spec1.getY() - .1)) {
                     follower.followPath(get2,true);
-                    outtake(2600);
+               //     outtake(2600);
                     setPathState(10);
                 }
                 break;
@@ -286,7 +283,7 @@ public class fiveSpec extends OpMode {
             case 10:
                 if(follower.getPose().getX() > (getSpec.getX() - .1) && follower.getPose().getY() > (getSpec.getY() - .1)) {
                     follower.followPath(hang2,true);
-                    outtake(0);
+                  //  outtake(0);
                     setPathState(11);
                 }
                 break;
@@ -294,7 +291,7 @@ public class fiveSpec extends OpMode {
             case 11:
                 if(follower.getPose().getX() > (spec2.getX() - .1) && follower.getPose().getY() > (spec2.getY() - .1)) {
                     follower.followPath(get3,true);
-                    outtake(2600);
+                 //   outtake(2600);
                     setPathState(12);
                 }
                 break;
@@ -302,7 +299,7 @@ public class fiveSpec extends OpMode {
             case 12:
                 if(follower.getPose().getX() > (getSpec.getX() - .1) && follower.getPose().getY() > (getSpec.getY() - .1)) {
                     follower.followPath(hang3,true);
-                    outtake(0);
+                 //   outtake(0);
                     setPathState(13);
                 }
                 break;
@@ -310,7 +307,7 @@ public class fiveSpec extends OpMode {
             case 13:
                 if(follower.getPose().getX() > (spec3.getX() - .1) && follower.getPose().getY() > (spec3.getY() - .1)) {
                     follower.followPath(get4,true);
-                    outtake(2600);
+                 //   outtake(2600);
                     setPathState(14);
                 }
                 break;
@@ -318,7 +315,7 @@ public class fiveSpec extends OpMode {
             case 14:
                 if(follower.getPose().getX() > (getSpec.getX() - 1) && follower.getPose().getY() > (getSpec.getY() - .1)) {
                     follower.followPath(hang4,true);
-                    outtake(0);
+                //    outtake(0);
                     setPathState(15);
                 }
                 break;
@@ -361,7 +358,7 @@ public class fiveSpec extends OpMode {
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
         buildPaths();
-
+        back = hardwareMap.get(DcMotor.class,"back");
         back.setDirection(DcMotorSimple.Direction.REVERSE);
         back.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

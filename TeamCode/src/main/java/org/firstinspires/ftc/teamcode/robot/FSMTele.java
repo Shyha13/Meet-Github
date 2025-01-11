@@ -27,7 +27,7 @@ public class FSMTele extends LinearOpMode {
     public static double intakeTarget = 0;
     public static double outtakeTarget = 0;
 
-    public static double intakeOut = 490;
+    public static double intakeOut = 750;
     public static double intakeIn = 0;
 
     public static double outtakeIn = 0;
@@ -149,6 +149,9 @@ public class FSMTele extends LinearOpMode {
             telemetry.addData("Back Slides Position: ", back.getCurrentPosition());
             telemetry.addData("Intake Slides Position: ", lr.getCurrentPosition());
             telemetry.addData("State: ", currentState);
+            telemetry.addData("slideL",lm.getPosition());
+            telemetry.addData("slideR",rm.getPosition());
+            telemetry.addData("wrist",wrist.getPower());
             telemetry.update();
         }
     }
@@ -179,12 +182,12 @@ public class FSMTele extends LinearOpMode {
     }
 
 
-    public void intakeSample() {
+    public void outtakeSample() {
         fl.setPower(-1.0);
         fr.setPower(1.0);
     }
 
-    public void outtakeSample() {
+    public void intakeSample() {
         fl.setPower(1.0);
         fr.setPower(-1.0);
     }
@@ -196,11 +199,12 @@ public class FSMTele extends LinearOpMode {
 
 
     public void leftWrist() {
-        wrist.setPower(0.5);
+
+        wrist.setPower(0.25);
     }
 
     public void rightWrist() {
-        wrist.setPower(-0.5);
+        wrist.setPower(-0.25);
     }
 
     public void idleWrist() {
@@ -209,15 +213,18 @@ public class FSMTele extends LinearOpMode {
 
 
     public void upIntake() {
-        lm.setPosition(0); // to be tuned cuz idk what the actual positions r
-        rm.setPosition(0); // to be tuned cuz idk what the actual positions r
+        lm.setPosition(2); // to be tuned cuz idk what the actual positions r
+        rm.setPosition(-1); // to be tuned cuz idk what the actual positions r
     }
 
     public void downIntake() {
-        lm.setPosition(0.5); // to be tuned cuz idk what the actual positions r
-        rm.setPosition(0.5); // to be tuned cuz idk what the actual positions r
-        // is rm supposed to be negative since it's mirrored to lm? or vice versa or idk
+        rm.setPosition(-2); // to be tuned cuz idk what the actual positions r
+        lm.setPosition(3); // to be tuned cuz idk what the actual positions r
+
     }
+
+
+
 
 
 
@@ -232,9 +239,9 @@ public class FSMTele extends LinearOpMode {
     }
 
     public void controlSample(Gamepad gamepad) {
-        if (gamepad2.y) {
+        if (gamepad2.right_stick_button) {
             intakeSample();
-        } else if (gamepad2.a) {
+        } else if (gamepad2.left_stick_button) {
             outtakeSample();
         } else {
             idleSample();
@@ -252,11 +259,12 @@ public class FSMTele extends LinearOpMode {
     }
 
     public void controlIntake(Gamepad gamepad) { //check
-        if (gamepad2.dpad_up) {
-            upIntake();
-        } else if (gamepad2.dpad_down) {
+        if (gamepad2.dpad_down) {
             downIntake();
+        } else if (gamepad2.dpad_up) {
+            upIntake();
         }
+
 
     }
 }
